@@ -61,25 +61,27 @@ import java.time.LocalDateTime;
 
     @Override
     public Mono<ResponseEntity<String>> cerrarSeccion(LoginResquestDTO loginResquestDTO) {
-        return Mono.fromRunnable(() -> {
+        return Mono.just(loginResquestDTO)
+                .flatMap(request -> {
                     // Formato de los datos de cierre de sesión
                     String logData = String.format("Tipo Documento: %s, Número Documento: %s, Fecha de Cierre: %s%n",
-                            loginResquestDTO.tipoDocumento(),
-                            loginResquestDTO.numeroDocumento(),
+                            request.tipoDocumento(),
+                            request.numeroDocumento(),
                             LocalDateTime.now());
 
                     // Especificar la ruta del archivo de registro
-                    Path filePath = Paths.get("cerrar_seccion.txt");
+                    Path filePath = Paths.get("cerrar_sesion.txt");
 
                     try (BufferedWriter writer = Files.newBufferedWriter(filePath, StandardOpenOption.APPEND, StandardOpenOption.CREATE)) {
                         writer.write(logData);
                     } catch (IOException e) {
-                        throw new RuntimeException("Error al registrar el cierre de sesión", e);
+                        return Mono.error(new RuntimeException("Error al registrar el cierre de sesión", e));
                     }
+
+                    return Mono.just(ResponseEntity.ok("Cierre de sesión registrado exitosamente."));
                 })
-                .then(Mono.just(ResponseEntity.ok("Cierre de sesión registrado exitosamente.")))
-                .onErrorReturn(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                        .body("Error al registrar el cierre de sesión.")); // Manejo de errores
+                .onErrorResume(e -> Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .body("Error al registrar el cierre de sesión.")));
     }
     }
 

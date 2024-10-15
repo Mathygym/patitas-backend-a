@@ -1,4 +1,0 @@
-Tipo Documento: 2, Número Documento: 98765432, Fecha de Cierre: 2024-10-12T01:17:16.852013700
-Tipo Documento: null, Número Documento: null, Fecha de Cierre: 2024-10-12T01:17:57.691750800
-Tipo Documento: 2, Número Documento: 98765432, Fecha de Cierre: 2024-10-12T01:19:30.626771
-Tipo Documento: 1, Número Documento: 12345678, Fecha de Cierre: 2024-10-12T01:19:54.989889500

@@ -49,6 +49,7 @@ public class AutenticacionController {
   }
     @PostMapping("/cerrar-async")
     public Mono<ResponseEntity<Map<String, String>>> logout(@RequestBody LoginResquestDTO loginRequestDTO) {
+        System.out.println("Datos recibidos: " + loginRequestDTO);
         return autenticacionService.cerrarSeccion(loginRequestDTO)
                 .map(response -> {
                     Map<String, String> responseBody = new HashMap<>();
